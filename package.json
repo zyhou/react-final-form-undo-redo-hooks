@@ -5,11 +5,12 @@
   "keywords": [],
   "main": "index.js",
   "dependencies": {
-    "styled-components": "latest",
-    "react-final-form": "latest",
+    "final-form": "latest",
+    "lodash.isequal": "4.5.0",
     "react": "latest",
     "react-dom": "latest",
-    "final-form": "latest"
+    "react-final-form": "latest",
+    "styled-components": "latest"
   },
   "devDependencies": {
     "react-scripts": "1.0.0"
