@@ -1,0 +1,23 @@
+{
+  "name": "react-final-form-undo-redo-hooks",
+  "version": "0.0.0",
+  "description": "An example of a simple form created with React Final Form",
+  "keywords": [],
+  "main": "index.js",
+  "dependencies": {
+    "styled-components": "latest",
+    "react-final-form": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "final-form": "latest"
+  },
+  "devDependencies": {
+    "react-scripts": "1.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
