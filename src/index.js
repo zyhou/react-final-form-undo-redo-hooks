@@ -26,7 +26,7 @@ const App = () => (
       onSubmit={onSubmit}
       initialValues={{ stooge: "larry", employed: false }}
       render={({ handleSubmit, form, submitting, pristine, values }) => {
-        const { entries, undo, clear } = useFormHistory(form);
+        const { canUndo, undo, canRedo, redo, clear } = useFormHistory(form);
 
         return (
           <form onSubmit={handleSubmit}>
@@ -163,12 +163,11 @@ const App = () => (
               >
                 Reset
               </button>
-              <button
-                type="button"
-                onClick={undo}
-                disabled={entries.length <= 1}
-              >
+              <button type="button" onClick={undo} disabled={!canUndo}>
                 Undo
+              </button>
+              <button type="button" onClick={redo} disabled={!canRedo}>
+                Redo
               </button>
             </div>
             <pre>{JSON.stringify(values, 0, 2)}</pre>

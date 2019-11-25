@@ -1,66 +1,62 @@
 import React from "react";
 import isEqual from "lodash.isequal";
 
+import useHistory from "./useHistory";
+
 const useFormHistory = form => {
-  const lastActive = React.useRef();
-  const needUndo = React.useRef(false);
-  const { values } = form.getState();
+  const { values, active } = form.getState();
 
-  const [entries, setEntries] = React.useState([values]);
-  const lastEntry = entries[entries.length - 1];
+  const {
+    present,
+    past,
+    future,
+    set,
+    undo,
+    redo,
+    clear,
+    canUndo,
+    canRedo
+  } = useHistory(values);
 
-  const subscriber = React.useCallback(
-    ({ active, values }) => {
-      if (lastActive.current !== active) {
-        lastActive.current = active;
-
-        if (!isEqual(lastEntry, values)) {
-          setEntries([...entries, values]);
-        }
-      }
-    },
-    [entries, lastEntry]
-  );
-
-  const snapshot = () => {
-    const { values } = form.getState();
-    setEntries([...entries, values]);
-  };
-
-  const undo = () => {
-    if (entries.length > 1) {
-      needUndo.current = true;
-      const newEntries = entries.slice(0, -1);
-      setEntries(newEntries);
-    }
-  };
-
-  const clear = () => {
-    lastActive.current = undefined;
-    setEntries([values]);
-  };
+  const willInitialize = React.useRef(false);
 
   React.useEffect(() => {
-    const unsubscribe = form.subscribe(subscriber, {
-      active: true,
-      values: true
-    });
-    return unsubscribe;
-  }, [form]);
+    if (!active && !isEqual(present, values)) {
+      set(values);
+    }
+  }, [active]);
 
   React.useEffect(() => {
-    if (needUndo.current && lastEntry) {
-      needUndo.current = false;
-      form.initialize(lastEntry);
+    if (willInitialize.current) {
+      form.initialize(present);
+      willInitialize.current = false;
     }
-  }, [lastEntry]);
+  }, [present]);
+
+  const formUndo = () => {
+    willInitialize.current = true;
+    undo();
+  };
+
+  const formRedo = () => {
+    willInitialize.current = true;
+    redo();
+  };
+
+  const formClear = () => {
+    willInitialize.current = true;
+    clear();
+  };
 
   return {
-    lastEntry,
-    snapshot,
-    entries,
-    undo,
-    clear
+    present,
+    past,
+    future,
+    undo: formUndo,
+    redo: formRedo,
+    clear: formClear,
+    canUndo,
+    canRedo
   };
 };
 
