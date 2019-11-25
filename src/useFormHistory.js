@@ -21,17 +21,17 @@ const useFormHistory = form => {
   const willInitialize = React.useRef(false);
 
   React.useEffect(() => {
-    if (!active && !isEqual(present, values)) {
+    if (!isEqual(present, values) && !active && !willInitialize.current) {
       set(values);
     }
-  }, [active]);
+  }, [active, set, values, present]);
 
   React.useEffect(() => {
     if (willInitialize.current) {
       form.initialize(present);
       willInitialize.current = false;
     }
-  }, [present]);
+  }, [form, present]);
 
   const formUndo = () => {
     willInitialize.current = true;

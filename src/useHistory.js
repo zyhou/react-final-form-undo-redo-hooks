@@ -79,7 +79,7 @@ const useHistory = initialPresent => {
 
   const clear = React.useCallback(
     () => dispatch({ type: "CLEAR", initialPresent }),
-    [dispatch]
+    [dispatch, initialPresent]
   );
 
   return {
