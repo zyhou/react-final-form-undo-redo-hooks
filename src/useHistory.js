@@ -11,7 +11,6 @@ const reducer = (state, action) => {
 
   switch (action.type) {
     case "UNDO":
-      console.log("undo");
       const previous = past[past.length - 1];
       const newPast = past.slice(0, past.length - 1);
 
@@ -47,6 +46,8 @@ const reducer = (state, action) => {
         ...initialState,
         present: initialPresent
       };
+    default:
+      return state;
   }
 };
 
