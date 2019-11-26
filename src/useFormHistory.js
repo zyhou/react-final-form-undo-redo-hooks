@@ -33,28 +33,18 @@ const useFormHistory = form => {
     }
   }, [form, present]);
 
-  const formUndo = () => {
+  const addWillInitialize = fn => () => {
     willInitialize.current = true;
-    undo();
-  };
-
-  const formRedo = () => {
-    willInitialize.current = true;
-    redo();
-  };
-
-  const formClear = () => {
-    willInitialize.current = true;
-    clear();
+    fn();
   };
 
   return {
     present,
     past,
     future,
-    undo: formUndo,
-    redo: formRedo,
-    clear: formClear,
+    undo: addWillInitialize(undo),
+    redo: addWillInitialize(redo),
+    clear: addWillInitialize(clear),
     canUndo,
     canRedo
   };
